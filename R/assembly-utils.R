@@ -254,7 +254,7 @@ build_and_save_assembly_accessions_table <- function(dir=".", quiet=FALSE)
                 ignore.case=TRUE)
     if (length(idx) == 1L)
         return(assembly_accessions[idx, "refseq_accession"])
-    if (length(idx) >= 2L) 
+    if (length(idx) >= 2L)
         stop("more than one RefSeq assembly accession found for regular ",
              "expression \"", assembly_accession, "\"")
 
@@ -316,9 +316,11 @@ build_and_save_assembly_accessions_table <- function(dir=".", quiet=FALSE)
     ## by NCBI in the assembly report.
     colnames <- c("SequenceName", "SequenceRole", "AssignedMolecule",
                   "AssignedMoleculeLocationOrType", "GenBankAccn",
-                  "Relationship", "RefSeqAccn", "AssemblyUnit" , 
+                  "Relationship", "RefSeqAccn", "AssemblyUnit" ,
                   "SequenceLength", "UCSCStyleName")
-    read.table(url, sep="\t", col.names=colnames, stringsAsFactors=FALSE)
+    destfile <- tempfile()
+    download.file(url, destfile, quiet=TRUE)
+    read.table(destfile, sep="\t", col.names=colnames, stringsAsFactors=FALSE)
 }
 
 ### See .normarg_assembly_accession() for how 'assembly_accession' can be
@@ -346,4 +348,3 @@ fetch_assembly_report <- function(assembly_accession, AssemblyUnits=NULL)
     }
     ans
 }
-
